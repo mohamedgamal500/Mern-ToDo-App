@@ -18,7 +18,6 @@ class App extends Component {
   Finishedtodos = (ftodo) => {
     this.setState(function (state) {
       const newtodo = state.ftodos.concat(ftodo);
-
       return {
         ftodos: newtodo,
       };

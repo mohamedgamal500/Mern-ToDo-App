@@ -5,7 +5,7 @@ import TodoItem from './components/todoItem';
 import AddTodo from './components/addTodo';
 
 export default function App() {
-  const [todos, setTodos] = useState();
+  const [todos, setTodos] = useState([{ text: 'study react', key: '1' }]);
 
   const pressHandler = (key) => {
     setTodos(prevTodos => {

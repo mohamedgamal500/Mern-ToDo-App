@@ -2,14 +2,25 @@ import React, { Component } from "react";
 import Todos from "./todo";
 import Addtodo from "./addtodo";
 import FinishedTodos from "./finishedtodos";
+import { fetchTodos } from "./api";
+
 class App extends Component {
   state = {
     todos: [],
     ftodos: [],
   };
 
+  async componentDidMount() {
+    try {
+      const { data } = await fetchTodos();
+      this.setState({ todos: data });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   deletetodo = (id) => {
-    const todos = this.state.todos.filter((todo) => todo.id !== id);
+    const todos = this.state.todos.filter((todo) => todo._id !== id);
     this.setState({
       todos: todos,
     });
@@ -25,15 +36,15 @@ class App extends Component {
   };
 
   addTodo = (s) => {
-    s.id = Math.random();
+    //s.id = Math.random();
     //console.log(s);
     this.setState(function (state) {
       //state.todos.push(s);// state is immutable object in react so we can not edit it.
       //console.log(state);
-      const newtodo = state.todos.concat(s); // we can generate new array instead //updates the array and returns the new updated array
+      const newtodos = state.todos.concat(s); // we can generate new array instead //updates the array and returns the new updated array
       //console.log(newtodo);
       return {
-        todos: newtodo,
+        todos: newtodos,
       };
     });
   };

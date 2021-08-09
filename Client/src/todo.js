@@ -6,7 +6,7 @@ const Todos = function ({ todos, deleteTodo, Finishedtodos }) {
       return (
         <div
           onClick={() => {
-            deleteTodo(todo.id);
+            deleteTodo(todo._id);
             Finishedtodos(todo);
           }}
           className="collection-item"

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { createTodo } from "./api";
 
 class Addtodo extends Component {
   state = { id: null, content: "" };
@@ -13,7 +14,12 @@ class Addtodo extends Component {
     if (this.state.content === "") {
       alert("please add your todo");
     } else {
-      this.props.addTodo(this.state);
+      createTodo({ content: this.state.content }).then((response) => {
+        console.log("content", response.data.content);
+        this.props.addTodo({ id: 0, content: response.data.content });
+      });
+
+      //this.props.addTodo(this.state);
       this.setState({
         id: null,
         content: "",

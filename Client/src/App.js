@@ -1,13 +1,12 @@
 import React, { Component } from "react";
-import Todos from "./todo";
+import Todos from "./todos";
 import Addtodo from "./addtodo";
 import FinishedTodos from "./finishedtodos";
-import { fetchTodos } from "./api";
+import { fetchTodos, updateTodo } from "./api";
 
 class App extends Component {
   state = {
     todos: [],
-    ftodos: [],
   };
 
   async componentDidMount() {
@@ -19,24 +18,21 @@ class App extends Component {
     }
   }
 
-  deletetodo = (id) => {
-    const todos = this.state.todos.filter((todo) => todo._id !== id);
-    this.setState({
-      todos: todos,
-    });
-  };
-
-  Finishedtodos = (ftodo) => {
-    this.setState(function (state) {
-      const newtodo = state.ftodos.concat(ftodo);
-      return {
-        ftodos: newtodo,
-      };
+  deletetodo = (todo) => {
+    const todosCopy = [...this.state.todos];
+    const index = todosCopy.indexOf(todo);
+    todosCopy[index] = { ...todosCopy[index] };
+    todosCopy[index].completed = !todo.completed;
+    console.log(todosCopy);
+    updateTodo(todo._id, todosCopy[index]).then((response) => {
+      console.log("content", response.data);
+      this.setState({
+        todos: todosCopy,
+      });
     });
   };
 
   addTodo = (s) => {
-    //s.id = Math.random();
     //console.log(s);
     this.setState(function (state) {
       //state.todos.push(s);// state is immutable object in react so we can not edit it.
@@ -53,13 +49,15 @@ class App extends Component {
       <div className="App container">
         <h1 className="center teal-text ">TODOS</h1>
         <Todos
-          todos={this.state.todos}
+          todos={this.state.todos.filter((todo) => todo.completed === false)}
           deleteTodo={this.deletetodo}
-          Finishedtodos={this.Finishedtodos}
         />
         <Addtodo addTodo={this.addTodo} />
         <h1 className="center red-text darken-4-text">FINISHED</h1>
-        <FinishedTodos ftodos={this.state.ftodos} />
+        <FinishedTodos
+          ftodos={this.state.todos.filter((todo) => todo.completed === true)}
+          deleteTodo={this.deletetodo}
+        />
       </div>
     );
   }

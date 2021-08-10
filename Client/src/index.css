@@ -5,3 +5,7 @@
   overflow: hidden;
   position: relative;
 }
+
+.deleted {
+  text-decoration: line-through;
+}

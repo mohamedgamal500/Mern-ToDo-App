@@ -22,8 +22,8 @@ mongoose
   .catch((error) => console.log(`${error} did not connect`));
 
 app.post("/", (req, res) => {
-  const { content } = req.body;
-  const todo = new Todo({ content: content });
+  const { content, completed } = req.body;
+  const todo = new Todo({ content, completed });
   todo
     .save()
     .then((todo) => {
@@ -37,8 +37,26 @@ app.post("/", (req, res) => {
 app.get("/", async (req, res) => {
   try {
     const tasks = await Todo.find();
-    res.send(tasks);
+    res.json(tasks);
   } catch (error) {
-    res.send(error);
+    res.json(error);
   }
+});
+
+app.patch("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { completed } = req.body;
+  //console.log(req.body);
+  if (!mongoose.Types.ObjectId.isValid(id))
+    return res.status(404).send(`No todo with id: ${id}`);
+
+  const updatedTodo = await Todo.findByIdAndUpdate(
+    id,
+    { completed },
+    {
+      new: true,
+    }
+  );
+
+  res.json(updatedTodo);
 });

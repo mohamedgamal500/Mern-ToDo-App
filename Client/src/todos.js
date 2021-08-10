@@ -1,16 +1,15 @@
 import React from "react";
 
-const Todos = function ({ todos, deleteTodo, Finishedtodos }) {
+const Todos = function ({ todos, deleteTodo }) {
   const todoList = todos.length ? (
     todos.map(function (todo) {
       return (
         <div
           onClick={() => {
-            deleteTodo(todo._id);
-            Finishedtodos(todo);
+            deleteTodo(todo);
           }}
           className="collection-item"
-          key={todo.id}
+          key={todo._id}
         >
           <span className="teal-text text-lighten-2">{todo.content}</span>
         </div>

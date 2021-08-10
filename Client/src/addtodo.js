@@ -14,12 +14,16 @@ class Addtodo extends Component {
     if (this.state.content === "") {
       alert("please add your todo");
     } else {
-      createTodo({ content: this.state.content }).then((response) => {
-        console.log("content", response.data.content);
-        this.props.addTodo({ id: 0, content: response.data.content });
-      });
+      createTodo({ content: this.state.content, completed: false }).then(
+        (response) => {
+          console.log("content", response.data);
+          this.props.addTodo({
+            content: response.data.content,
+            completed: false,
+          });
+        }
+      );
 
-      //this.props.addTodo(this.state);
       this.setState({
         id: null,
         content: "",
